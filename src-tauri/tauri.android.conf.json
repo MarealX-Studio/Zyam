@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Zyam",
+  "version": "0.1.0",
+  "identifier": "com.mareamx.zyam",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:3456",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../out"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Zyam",
+        "label": "main",
+        "width": 1360,
+        "minWidth": 1280,
+        "height": 720,
+        "minHeight": 680,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": "all",
+    "resources": [
+      "icons"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "mobile": {
+    "android": {
+      "appBundle": {
+        "identifier": "com.mareamx.zyam"
+      },
+      "signing": {
+        "debug": {
+          "keystorePath": "keystore/debug.keystore",
+          "keystorePassword": "password",
+          "keyAlias": "debug",
+          "keyPassword": "password"
+        }
+      },
+      "resources": {
+        "mipmap": [
+          "icons/android/mipmap-mdpi/ic_launcher.png",
+          "icons/android/mipmap-hdpi/ic_launcher.png",
+          "icons/android/mipmap-xhdpi/ic_launcher.png",
+          "icons/android/mipmap-xxhdpi/ic_launcher.png",
+          "icons/android/mipmap-xxxhdpi/ic_launcher.png"
+        ],
+        "drawable": []
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRENURGRUVFREY4M0RGRDkKUldUWjM0UGY3djVkVGQ0aDluR0J6SnBUV2dET0FibXdzVmdTL2hIM21QQ1NCS3R2enllUStSd2oK",
+      "endpoints": [
+        "http://api.upgrade.toolsetlink.com/v1/tauri/upgrade?tauriKey=tyEi-iLVFxnRhGc9c_xApw&versionName={{current_version}}&appointVersionName=&devModelKey=&devKey=&target={{target}}&arch={{arch}}",
+        "https://github.com/MarealX-Studio/Zyam/releases/latest/download/latest.json"
+      ],
+      "createUpdaterArtifacts": true,
+      "dangerousInsecureTransportProtocol": true
+    }
+  }
+}

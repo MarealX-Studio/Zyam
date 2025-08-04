@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useStore } from '@/store/useStore';
+import useArticleStore from '@/stores/article';
 
 interface QuickNoteState {
   isOpen: boolean;
@@ -22,7 +22,7 @@ export function useQuickNote() {
     isProcessing: false
   });
 
-  const { saveFile } = useStore();
+  const { saveCurrentArticle: saveFile } = useArticleStore();
 
   const open = useCallback(() => {
     setState(prev => ({ ...prev, isOpen: true }));
@@ -51,12 +51,7 @@ export function useQuickNote() {
         ? `${titleSuggestion.content}.md` 
         : `快速笔记-${new Date().toLocaleDateString()}.md`;
 
-      await saveFile({
-        name: fileName,
-        path: '/快速笔记/',
-        content: content.trim(),
-        lastModified: new Date()
-      });
+      await saveFile(content.trim());
 
       close();
       return true;

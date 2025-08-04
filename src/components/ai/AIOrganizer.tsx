@@ -15,7 +15,7 @@ import {
   Zap,
   Settings
 } from 'lucide-react';
-import { useStore } from '../../store/useStore';
+import useArticleStore from '@/stores/article';
 
 interface OrganizationTask {
   id: string;
@@ -36,7 +36,7 @@ export default function AIOrganizer({ isOpen, onClose }: AIOrganizerProps) {
   const [tasks, setTasks] = useState<OrganizationTask[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [overallProgress, setOverallProgress] = useState(0);
-  const { articles, folders } = useStore();
+  const { allArticle: articles, fileTree: folders } = useArticleStore();
 
   const startAnalysis = useCallback(async () => {
     setIsAnalyzing(true);

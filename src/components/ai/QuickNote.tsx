@@ -15,7 +15,7 @@ import {
   Clock,
   X
 } from 'lucide-react';
-import { useStore } from '@/store/useStore';
+import useArticleStore from '@/stores/article';
 import './quick-note.scss';
 
 interface QuickNoteProps {
@@ -37,7 +37,7 @@ export default function QuickNote({ isOpen, onClose, onSave }: QuickNoteProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   
-  const { saveFile } = useStore();
+  const { saveCurrentArticle: saveFile } = useArticleStore();
 
   useEffect(() => {
     if (isOpen && textareaRef.current) {
@@ -141,12 +141,7 @@ export default function QuickNote({ isOpen, onClose, onSave }: QuickNoteProps) {
     const fileName = titleSuggestion ? `${titleSuggestion.content}.md` : `快速笔记-${new Date().toLocaleDateString()}.md`;
     
     try {
-      await saveFile({
-        name: fileName,
-        path: '/快速笔记/',
-        content: content.trim(),
-        lastModified: new Date()
-      });
+      await saveFile(content.trim());
       
       onSave(content, aiSuggestions);
       setContent('');

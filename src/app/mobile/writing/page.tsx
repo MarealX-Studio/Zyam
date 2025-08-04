@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Save, Share, MoreHorizontal, Edit3, Eye, Settings2 } from 'lucide-react';
-import { useStore } from '@/store/useStore';
+import useArticleStore from '@/stores/article';
 import { usePathname } from 'next/navigation';
-import CustomHeader from './custom-header';
+import { WritingHeader as CustomHeader } from './custom-header';
 import '../mobile-styles.scss';
 
 interface WritingPageProps {
@@ -24,7 +24,7 @@ export default function WritingPage({ searchParams }: WritingPageProps) {
   const [showToolbar, setShowToolbar] = useState(false);
   const editorRef = useRef<HTMLTextAreaElement>(null);
   
-  const { currentFile, saveFile } = useStore();
+  const { activeFilePath, currentArticle, saveCurrentArticle } = useArticleStore();
 
   useEffect(() => {
     if (searchParams?.file) {
@@ -33,22 +33,19 @@ export default function WritingPage({ searchParams }: WritingPageProps) {
     if (searchParams?.folder) {
       setFilePath(decodeURIComponent(searchParams.folder));
     }
-    if (currentFile) {
-      setContent(currentFile.content || '');
-      setFileName(currentFile.name);
-      setFilePath(currentFile.path);
+    if (activeFilePath) {
+      setFilePath(activeFilePath);
+      setFileName(activeFilePath.split('/').pop() || '');
     }
-  }, [searchParams, currentFile]);
+    if (currentArticle) {
+      setContent(currentArticle);
+    }
+  }, [searchParams, activeFilePath, currentArticle]);
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await saveFile({
-        name: fileName,
-        path: filePath,
-        content,
-        lastModified: new Date()
-      });
+      await saveCurrentArticle(content);
     } catch (error) {
       console.error('Save failed:', error);
     } finally {
@@ -110,12 +107,7 @@ export default function WritingPage({ searchParams }: WritingPageProps) {
 
   return (
     <div className="mobile-writing">
-      <CustomHeader 
-        fileName={fileName}
-        filePath={filePath}
-        onSave={handleSave}
-        isSaving={isSaving}
-      />
+      <CustomHeader />
 
       <div className="editor-container">
         {showToolbar && (

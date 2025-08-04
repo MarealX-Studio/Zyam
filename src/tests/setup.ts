@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi, beforeEach, afterEach } from 'vitest';
 
 // Mock window and DOM APIs
 Object.defineProperty(window, 'matchMedia', {
