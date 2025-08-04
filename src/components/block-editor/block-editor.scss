@@ -1,0 +1,269 @@
+.block-editor {
+  .block-item {
+    position: relative;
+    
+    &:hover {
+      .drag-handle {
+        opacity: 1;
+      }
+      
+      .add-block-btn {
+        opacity: 1;
+      }
+    }
+    
+    .drag-handle {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      cursor: grab;
+      
+      &:active {
+        cursor: grabbing;
+      }
+    }
+    
+    .add-block-btn {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+  }
+  
+  // 不同块类型的样式
+  .block-heading1 {
+    .block-input {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+  }
+  
+  .block-heading2 {
+    .block-input {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+  }
+  
+  .block-heading3 {
+    .block-input {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+  
+  .block-quote {
+    border-left: 4px solid var(--primary);
+    padding-left: 1rem;
+    
+    .block-input {
+      font-style: italic;
+      color: var(--muted-foreground);
+    }
+  }
+  
+  .block-code {
+    background: var(--muted);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    
+    .block-input {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      background: transparent;
+    }
+  }
+  
+  .block-list {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    
+    .list-marker {
+      margin-top: 0.25rem;
+      user-select: none;
+    }
+    
+    .block-input {
+      flex: 1;
+    }
+  }
+  
+  .block-todo {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    
+    .todo-checkbox {
+      margin-top: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: var(--muted);
+      }
+      
+      &.checked {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--primary-foreground);
+      }
+    }
+    
+    .block-input {
+      flex: 1;
+      
+      &.completed {
+        text-decoration: line-through;
+        color: var(--muted-foreground);
+      }
+    }
+  }
+  
+  .block-divider {
+    padding: 1rem 0;
+    
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+  }
+  
+  // 通用输入框样式
+  .block-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    resize: none;
+    
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+    
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  // 拖拽状态样式
+  .dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+  }
+  
+  .drop-target {
+    background: var(--accent);
+    border: 2px dashed var(--primary);
+    border-radius: 0.5rem;
+  }
+  
+  // 块菜单样式
+  .block-menu {
+    position: fixed;
+    z-index: 50;
+    background: var(--popover);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    width: 20rem;
+    max-height: 25rem;
+    
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      background: var(--background);
+      font-size: 0.875rem;
+      
+      &:focus {
+        outline: none;
+        ring: 2px solid var(--ring);
+      }
+    }
+    
+    .menu-items {
+      max-height: 16rem;
+      overflow-y: auto;
+      margin-top: 0.5rem;
+    }
+    
+    .menu-item {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      
+      &:hover,
+      &.selected {
+        background: var(--accent);
+      }
+      
+      .item-icon {
+        flex-shrink: 0;
+      }
+      
+      .item-content {
+        flex: 1;
+        text-align: left;
+        
+        .item-label {
+          font-weight: 500;
+          font-size: 0.875rem;
+        }
+        
+        .item-description {
+          font-size: 0.75rem;
+          color: var(--muted-foreground);
+        }
+      }
+    }
+    
+    .menu-footer {
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+// 深色主题适配
+@media (prefers-color-scheme: dark) {
+  .block-editor {
+    .block-menu {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .block-editor {
+    .block-menu {
+      width: calc(100vw - 2rem);
+      max-width: 20rem;
+    }
+    
+    .drag-handle {
+      opacity: 1; // 在移动设备上始终显示
+    }
+  }
+}
